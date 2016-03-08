@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# mkx.sh   // make executible
+# mkx   // make executible
 
 # file name specified?
 if [ $1 ]; then
