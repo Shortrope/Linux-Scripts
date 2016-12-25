@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# cp project directory to webserver
+# Usage:  cp2webserver src-dir target-dir-name
+# if 'target-dir-name' is omitted src-dir will be used as target-dir-name
+
+
+# src directory specified?
+if [ $1 ]; then
+    src=$1
+
+    # target directory name specified?
+    if [ $2 ]; then
+        target=$2
+    else
+        # target dir name same as src
+        target=$1
+    fi
+
+    # delete existing dir if it exists    
+    if [[ -d "/var/www/html/$target" ]]; then
+        rm -rf "/var/www/html/$target"
+    fi
+
+    # copy the directory
+    cp -R $src /var/www/html/$target
+
+else
+
+    echo "Error: no src directory specified!"
+    echo "Usage: cp2webserver 'src-dir'"
+    echo "Usage: cp2webserver 'src-dir' 'target-dir-name'"
+
+fi
+
