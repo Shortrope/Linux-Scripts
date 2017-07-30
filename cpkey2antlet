@@ -1,0 +1,33 @@
+ #!/bin/bash
+
+# cpkey2antlet: copy local public key to an LXC antlet authorized_keys file
+# usage: cpkey2antlet antlet_name
+
+if [ ! $1 ]; then
+  echo 'usage: cpkey2antlet antlet_name'
+  exit 1
+fi
+
+antletname=$1
+keyfile="/root/.ssh/id_rsa.pub"
+key=`cat $keyfile`
+sshdir="/antlets/$antletname/root/.ssh"
+authfile="$sshdir/authorized_keys"
+
+# does the .ssh directory exist
+if [ ! -d $sshdir ]; then
+  mkdir $sshdir
+fi
+# does the authorized_keys file exist
+if [ ! -f $authfile ]; then
+  touch $authfile
+fi
+
+# does key already exist in the file
+keypart=`cut -f 2 -d ' ' $keyfile`
+keyexists="`grep -q $keypart  $authfile`"
+
+#  add key to the file if it does not exist
+if [ ! $keyexists  ]; then
+    echo $key > $authfile
+fi
